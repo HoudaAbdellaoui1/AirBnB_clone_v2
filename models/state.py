@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from os import getenv
-from models.city import City
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import models
  
 
 class State(BaseModel, Base):
@@ -20,7 +20,7 @@ class State(BaseModel, Base):
         def cities(self):
             from models import storage
             cities_list=[]
-            for city in storage.all(City).values():
+            for city in storage.all(models.City).values():
                 if city.state_id == self.id:
                     cities_list.append(city)
             return cities_list
