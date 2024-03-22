@@ -29,8 +29,6 @@ class DBStorage:
     def all(self, cls= None):
         obj_dict = {}
         classes = [BaseModel, User, State, City, Amenity, Place, Review]
-        # if cls == None:
-        #     self.__session.query(cls).all()
         if cls:
             classes = [cls]
 
