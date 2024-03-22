@@ -13,7 +13,6 @@ class FileStorage:
         class (optional filtering).
         If cls is None, returns all objects."""
         if cls is not None:
-            print('here 1')
             return {k: v for k, v in self.__objects.items()
                     if isinstance(v, cls)}
         return self.__objects
