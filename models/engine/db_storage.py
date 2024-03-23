@@ -11,7 +11,6 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
 
-
 class DBStorage:
     """This class manages database of hbnb models in JSON format"""
     __engine = None
