@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
+import models
 from os import getenv
 
 class Place(BaseModel, Base):
@@ -20,7 +21,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+        reviews = relationship("Review", backref="place")
     else:
         city_id = ""
         user_id = ""
@@ -36,13 +37,14 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
-            """Getter attribute reviews that returns the list of Review instances with place_id equals to the current Place.id"""
-            from models import storage
-            reviews_list = []
-            for review in storage.all(Review).values():
+            """getter attribute returns the list of Review instances"""
+            from models.review import Review
+            review_list = []
+            all_reviews = models.storage.all(Review)
+            for review in all_reviews.values():
                 if review.place_id == self.id:
-                    reviews_list.append(review)
-            return reviews_list
+                    review_list.append(review)
+            return review_list
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
