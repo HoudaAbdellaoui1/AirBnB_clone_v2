@@ -11,15 +11,12 @@ from models.city import City
 
 class State(BaseModel, Base):
     """ State class """
-    __tablename__ = "states"
-    name = Column(String(128), nullable= False)
-    cities = relationship("City", backref="state")
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = "states"
+        name = Column(String(128), nullable= False)
+        cities = relationship("City", backref="state")
 
-    def __init__(self, *args, **kwargs):
-        """Initialize State object"""
-        super().__init__(*args, **kwargs)
-
-    if getenv('HBNB_TYPE_STORAGE') != 'db':
+    else:
         @property
         def cities(self):
             city_list = []
@@ -28,3 +25,7 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
+
+    def __init__(self, *args, **kwargs):
+        """Initialize State object"""
+        super().__init__(*args, **kwargs)
