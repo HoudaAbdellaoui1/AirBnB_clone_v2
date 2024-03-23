@@ -2,7 +2,7 @@
 """ Review module for the HBNB project """
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 
 class Review(BaseModel, Base):
     """ Review class to store review information """
