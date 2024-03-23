@@ -6,7 +6,7 @@ from os import getenv
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    if getenv('HBNB_STORAGE_TYPE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = "places"
         city_id = Column(String(60), nullable=False, ForeignKey="cities.id")
         user_id = Column(String(60), nullable=False, ForeignKey="users.id")
