@@ -2,20 +2,20 @@
 # Prepare web server
 if ! command -v nginx &> /dev/null; then
     if [ -x "$(command -v apt-get)" ]; then
-        sudo apt-get update
-        sudo apt-get install nginx -y
+        apt-get update
+        apt-get install nginx -y
     elif [ -x "$(command -v yum)" ]; then
-        sudo yum install epel-release -y
-        sudo yum install nginx -y
+        yum install epel-release -y
+        yum install nginx -y
     else
         echo "Unsupported package manager, cannot install Nginx."
         exit 1
     fi
 fi
 
-sudo chown -R $USER:$USER /data/web_static
+chown -R $USER:$USER /data/web_static
 
-sudo mkdir -p /data/web_static/{releases/test,shared}
+mkdir -p /data/web_static/{releases/test,shared}
 
 echo "<html>
   <head>
@@ -25,14 +25,14 @@ echo "<html>
   </body>
 </html>" | sudo tee /data/web_static/releases/test/index.html
 
-sudo ln -sf /data/web_static/releases/test /data/web_static/current
+ln -sf /data/web_static/releases/test /data/web_static/current
 
 config_block="location /hbnb_static {
         alias /data/web_static/current/;
         index index.html;
     }"
 
-sudo sed -i "/server_name _;/a $config_block" /etc/nginx/sites-available/default
+sed -i "/server_name _;/a $config_block" /etc/nginx/sites-available/default
 
 # Restart Nginx to apply changes
-sudo service nginx restart
+service nginx restart
