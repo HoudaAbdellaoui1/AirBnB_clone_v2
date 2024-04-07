@@ -6,13 +6,7 @@ mkdir -p /data/web_static/releases/test /data/web_static/shared
 
 mkdir -p /data/web_static/{releases/test,shared}
 
-echo "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>" | sudo tee /data/web_static/releases/test/index.html
+echo "test deploying web_static" > /data/web_static/releases/test/index.html
 
 ln -sf /data/web_static/releases/test /data/web_static/current
 
@@ -24,6 +18,4 @@ config_block="location /hbnb_static {
     }"
 
 sed -i "/server_name _;/a $config_block" /etc/nginx/sites-available/default
-
-# Restart Nginx to apply changes
-service nginx start
+service nginx restart
