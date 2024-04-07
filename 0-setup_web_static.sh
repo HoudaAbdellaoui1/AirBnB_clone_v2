@@ -16,7 +16,7 @@ echo "<html>
 
 ln -sf /data/web_static/releases/test /data/web_static/current
 
-chown -R $USER:$USER /data/web_static
+chown -R root:root /data/web_static
 
 config_block="location /hbnb_static {
         alias /data/web_static/current/;
