@@ -7,7 +7,6 @@ from sqlalchemy.orm import relationship
 import models
 
  
-
 class State(BaseModel, Base):
     """ State class """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
