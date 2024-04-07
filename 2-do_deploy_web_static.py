@@ -1,29 +1,58 @@
 #!/usr/bin/python3
+"""pack and deploy content to server
 """
-Script to distribute an archive to the web server
-"""
-
-from fabric.api import put, run, env
-from os.path import exists
+from fabric.api import local, env, run, put
+from datetime import datetime
+import os
 env.hosts = ['35.153.33.193', '54.174.11.67']
+env.user = 'ubuntu'
+
+
+def do_pack():
+    """pack all content within web_static
+    into a .tgz archive
+    The archive will be put in versions/
+    """
+    if not os.path.exists("versions"):
+        local("mkdir versions")
+    now = datetime.now()
+    name = "versions/web_static_{}.tgz".format(
+        now.strftime("%Y%m%d%H%M%S")
+    )
+    cmd = "tar -cvzf {} {}".format(name, "web_static")
+    result = local(cmd)
+    if not result.failed:
+        return name
 
 
 def do_deploy(archive_path):
-    """distribute archive"""
-    if exists(archive_path) is False:
+    """deploy package to remote server
+    Arguments:
+        archive_path: path to archive to deploy
+    """
+    if not archive_path or not os.path.exists(archive_path):
         return False
+    put(archive_path, '/tmp')
+    ar_name = archive_path[archive_path.find("/") + 1: -4]
     try:
-        file_n = archive_path.split("/")[-1]
-        no_ext = file_n.split(".")[0]
-        path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
-        run('rm /tmp/{}'.format(file_n))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
-        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('mkdir -p /data/web_static/releases/{}/'.format(ar_name))
+        run('tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/'.format(
+                ar_name, ar_name
+        ))
+        run('rm /tmp/{}.tgz'.format(ar_name))
+        run('mv /data/web_static/releases/{}/web_static/* \
+            /data/web_static/releases/{}/'.format(
+                ar_name, ar_name
+        ))
+        run('rm -rf /data/web_static/releases/{}/web_static'.format(
+            ar_name
+        ))
         run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
+        run('ln -s /data/web_static/releases/{}/ \
+            /data/web_static/current'.format(
+            ar_name
+        ))
+        print("New version deployed!")
         return True
-    except Exception:
+    except:
         return False
