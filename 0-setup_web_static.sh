@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 # Prepare web server
 if ! command -v nginx &> /dev/null; then
-    sudo apt-get update
-    sudo apt-get install nginx -y
+    if [ -x "$(command -v apt-get)" ]; then
+        sudo apt-get update
+        sudo apt-get install nginx -y
+    elif [ -x "$(command -v yum)" ]; then
+        sudo yum install epel-release -y
+        sudo yum install nginx -y
+    else
+        echo "Unsupported package manager, cannot install Nginx."
+        exit 1
+    fi
 fi
 
 sudo chown -R $USER:$USER /data/web_static
