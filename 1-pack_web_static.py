@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Generates a tgz archive from the web_static folder 
+Generates a tgz archive from the web_static folder
 """
 
 from datetime import datetime
@@ -17,5 +17,5 @@ def do_pack():
         file_name = "versions/web_static_{}.tgz".format(date)
         local("tar -cvzf {} web_static".format(file_name))
         return file_name
-    except:
+    except Exception:
         return None
