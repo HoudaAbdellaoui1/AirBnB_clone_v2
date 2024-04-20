@@ -36,7 +36,7 @@ def displayDefaultText(text="is_cool"):
 @app.route("/number/<int:n>", strict_slashes=False)
 def displayInt(n):
     if(isinstance(n, int)):
-        return f'{n}'
+        return f'{n} is a number'
 
 
 if __name__ == '__main__':
