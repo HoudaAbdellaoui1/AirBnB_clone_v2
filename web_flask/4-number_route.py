@@ -32,7 +32,6 @@ def displayDefaultText(text="is_cool"):
         return f'Python {text}'
 
 
-@app.route("/number/", strict_slashes=False)
 @app.route("/number/<int:n>", strict_slashes=False)
 def displayInt(n):
     if(isinstance(n, int)):
