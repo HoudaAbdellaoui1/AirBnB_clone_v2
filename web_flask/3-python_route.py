@@ -4,6 +4,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/", strict_slashes=False)
 def hello_world():
     return "Hello HBNB!"
@@ -20,6 +21,7 @@ def displayText(text):
         return f'C {text.replace("_", " ")}'
     else:
         return f'C {text}'
+
 
 @app.route("/python/<text>", strict_slashes=False)
 def displayDefaultText(text="is_cool"):
