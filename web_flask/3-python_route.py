@@ -21,6 +21,13 @@ def displayText(text):
     else:
         return f'C {text}'
 
+@app.route("/python/<text>", strict_slashes=False)
+def displayDefaultText(text="is_cool"):
+    if '_' in text:
+        return f'Python {text.replace("_", " ")}'
+    else:
+        return f'Python {text}'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
