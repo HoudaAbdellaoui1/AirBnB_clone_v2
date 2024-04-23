@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from os import getenv
+from AirBnB_clone_v2.models.city import City
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
@@ -20,11 +21,17 @@ class State(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
-            l = [
-                v for k, v in models.storage.all(models.City).items()
-                if v.state_id == self.id
-            ]
-            return (l)
+            city_list = []
+            all_cities = models.storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list
+            # l = [
+            #     v for k, v in models.storage.all(models.City).items()
+            #     if v.state_id == self.id
+            # ]
+            # return (l)
 
     def __init__(self, *args, **kwargs):
         """Initialize State object"""
