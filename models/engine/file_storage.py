@@ -62,3 +62,6 @@ class FileStorage:
 
     def delete_all(self):
         self.__objects.clear()
+    
+    def close(self):
+        self.reload()
