@@ -17,14 +17,14 @@ class State(BaseModel, Base):
     else:
         name=""
 
-
-    @property
-    def cities(self):
-        l = [
-            v for k, v in models.storage.all(models.City).values()
-            if v.state_id == self.id
-        ]
-        return (l)
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            l = [
+                v for k, v in models.storage.all(models.City).items()
+                if v.state_id == self.id
+            ]
+            return (l)
 
     def __init__(self, *args, **kwargs):
         """Initialize State object"""
