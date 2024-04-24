@@ -19,8 +19,8 @@ class Place(BaseModel, Base):
     """ A place to stay """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = "places"
-        city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
-        user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
+        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
         description = Column(String(1024), nullable=True)
         number_rooms = Column(Integer, nullable=False, default=0)
@@ -44,6 +44,11 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+    def __init__(self, *args, **kwargs):
+        """initializes place"""
+        super().__init__(*args, **kwargs)
+
+
         @property
         def reviews(self):
             """getter attribute returns the list of Review instances"""
@@ -63,7 +68,3 @@ class Place(BaseModel, Base):
                 if v.id in self.amenity_ids
             ]
             return (list)
-
-    def __init__(self, *args, **kwargs):
-        """initializes place"""
-        super().__init__(*args, **kwargs)
