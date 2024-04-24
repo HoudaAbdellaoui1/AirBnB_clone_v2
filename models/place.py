@@ -9,8 +9,8 @@ from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
-        Column('place_id', String(60), ForeignKey("places.id"),nullable=False, onupdate = 'CASCADE', ondelete = 'CASCADE'),
-        Column('amenity_id', String(60), ForeignKey("amenities.id"), primary_key=True, onupdate = 'CASCADE', ondelete = 'CASCADE')
+        Column('place_id', String(60), ForeignKey("places.id", onupdate = 'CASCADE', ondelete = 'CASCADE'),nullable=False),
+        Column('amenity_id', String(60), ForeignKey("amenities.id", onupdate = 'CASCADE', ondelete = 'CASCADE'), primary_key=True)
     )
 
 
