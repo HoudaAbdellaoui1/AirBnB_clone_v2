@@ -20,7 +20,9 @@ def getStates():
     """
     Display HTML page
     """
-    states = storage.all(State)
+    states = list(storage.all(State).values())
+    print("HERE ARE STAAAATES")
+    print(states)
     return render_template('7-states_list.html', states=states)
 
 
