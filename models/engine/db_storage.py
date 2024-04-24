@@ -10,6 +10,9 @@ from models.review import Review
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
+
 
 class DBStorage:
     """This class manages database of hbnb models in JSON format"""
@@ -25,19 +28,29 @@ class DBStorage:
         if (getenv('HBNB_ENV')) == 'test':
             Base.metadata.drop_all(self.__engine)
     
-    def all(self, cls= None):
-        obj_dict = {}
-        classes = [BaseModel, User, State, City, Amenity, Place, Review]
-        if cls:
-            classes = [cls]
+    # def all(self, cls= None):
+    #     obj_dict = {}
+    #     classes = [BaseModel, User, State, City, Amenity, Place, Review]
+    #     if cls:
+    #         classes = [cls]
 
-        for cls in classes:
-            objs = self.__session.query(cls).all()
-            for obj in objs:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                obj_dict[key] = obj
+    #     for cls in classes:
+    #         objs = self.__session.query(cls).all()
+    #         for obj in objs:
+    #             key = "{}.{}".format(obj.__class__.__name__, obj.id)
+    #             obj_dict[key] = obj
 
-        return (obj_dict)
+    #     return (obj_dict)
+    def all(self, cls=None):
+        """query on the current database session"""
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """Adds an object to the current db session"""
