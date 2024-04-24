@@ -21,6 +21,7 @@ def getStates():
     Display HTML page
     """
     states = list(storage.all(State).values())
+    states.sort(key=lambda x: x.name)
     print("HERE ARE STAAAATES")
     print(states)
     return render_template('7-states_list.html', states=states)
