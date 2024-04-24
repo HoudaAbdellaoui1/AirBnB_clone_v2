@@ -7,10 +7,13 @@ from sqlalchemy.orm import relationship
 import models
 from os import getenv
 
-place_amenity = Table('place_amenity', Base.metadata,
-    Column('place_id', String(60), ForeignKey("places.id"),nullable=False),
-    Column('amenity_id', String(60), ForeignKey("amenities.id"), primary_key=True)
-)
+if models.storage_t == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+        Column('place_id', String(60), ForeignKey("places.id"),nullable=False, onupdate = 'CASCADE', ondelete = 'CASCADE'),
+        Column('amenity_id', String(60), ForeignKey("amenities.id"), primary_key=True, onupdate = 'CASCADE', ondelete = 'CASCADE')
+    )
+
+
 class Place(BaseModel, Base):
 
     """ A place to stay """
@@ -62,5 +65,5 @@ class Place(BaseModel, Base):
             return (list)
 
     def __init__(self, *args, **kwargs):
-        """initializes user"""
+        """initializes place"""
         super().__init__(*args, **kwargs)
